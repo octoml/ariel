@@ -1,2 +1,2 @@
 # ariel
-A library for interfacing with Triton. 
+A library for interfacing with Triton.
