@@ -8,12 +8,14 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.6"
+python = ">=3.7"
 grpcio = "~1.41.0" # pinned to tritonclient's version
 tritonclient = {version = "^2.22.0", extras= ["all"]}
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
+transformers = "^4.19.2"
+torch = "^1.11.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
