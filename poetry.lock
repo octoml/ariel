@@ -79,6 +79,14 @@ docs = ["furo (>=2021.8.17b43)", "sphinx (>=4.1)", "sphinx-autodoc-typehints (>=
 testing = ["covdefaults (>=1.2.0)", "coverage (>=4)", "pytest (>=4)", "pytest-cov", "pytest-timeout (>=1.4.2)"]
 
 [[package]]
+name = "flatbuffers"
+version = "2.0"
+description = "The FlatBuffers serialization format for Python"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "gevent"
 version = "21.12.0"
 description = "Coroutine-based network library"
@@ -204,6 +212,19 @@ description = "NumPy is the fundamental package for array computing with Python.
 category = "main"
 optional = false
 python-versions = ">=3.6"
+
+[[package]]
+name = "onnxruntime"
+version = "1.8.0"
+description = "ONNX Runtime is a runtime accelerator for Machine Learning models"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+flatbuffers = "*"
+numpy = ">=1.16.6"
+protobuf = "*"
 
 [[package]]
 name = "packaging"
@@ -441,7 +462,7 @@ vision = ["pillow"]
 
 [[package]]
 name = "tritonclient"
-version = "2.22.0"
+version = "2.22.3"
 description = "Python client library and utilities for communicating with Triton Inference Server"
 category = "main"
 optional = false
@@ -451,12 +472,12 @@ python-versions = "*"
 geventhttpclient = {version = ">=1.4.4", optional = true, markers = "extra == \"all\""}
 grpcio = {version = "1.41.0", optional = true, markers = "extra == \"all\""}
 numpy = ">=1.19.1"
-protobuf = {version = ">=3.5.0", optional = true, markers = "extra == \"all\""}
+protobuf = {version = ">=3.5.0,<3.20", optional = true, markers = "extra == \"all\""}
 python-rapidjson = ">=0.9.1"
 
 [package.extras]
-all = ["protobuf (>=3.5.0)", "grpcio (==1.41.0)", "numpy (>=1.19.1)", "python-rapidjson (>=0.9.1)", "geventhttpclient (>=1.4.4)"]
-grpc = ["protobuf (>=3.5.0)", "grpcio (==1.41.0)", "numpy (>=1.19.1)", "python-rapidjson (>=0.9.1)"]
+all = ["protobuf (>=3.5.0,<3.20)", "grpcio (==1.41.0)", "numpy (>=1.19.1)", "python-rapidjson (>=0.9.1)", "geventhttpclient (>=1.4.4)"]
+grpc = ["protobuf (>=3.5.0,<3.20)", "grpcio (==1.41.0)", "numpy (>=1.19.1)", "python-rapidjson (>=0.9.1)"]
 http = ["geventhttpclient (>=1.4.4)", "numpy (>=1.19.1)", "python-rapidjson (>=0.9.1)"]
 
 [[package]]
@@ -527,7 +548,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7"
-content-hash = "0c216e4e2620732b539c09db7cd8b4b06f63427e805920b65d1dc8ecc4b47a23"
+content-hash = "9dfb1bba18f0ab6ed7b3294a2f713de766799020392a38e736f93296e5862a2b"
 
 [metadata.files]
 atomicwrites = [
@@ -669,6 +690,10 @@ colorama = [
 filelock = [
     {file = "filelock-3.7.1-py3-none-any.whl", hash = "sha256:37def7b658813cda163b56fc564cdc75e86d338246458c4c28ae84cabefa2404"},
     {file = "filelock-3.7.1.tar.gz", hash = "sha256:3a0fd85166ad9dbab54c9aec96737b744106dc5f15c0b09a6744a445299fcf04"},
+]
+flatbuffers = [
+    {file = "flatbuffers-2.0-py2.py3-none-any.whl", hash = "sha256:3751954f0604580d3219ae49a85fafec9d85eec599c0b96226e1bc0b48e57474"},
+    {file = "flatbuffers-2.0.tar.gz", hash = "sha256:12158ab0272375eab8db2d663ae97370c33f152b27801fa6024e1d6105fd4dd2"},
 ]
 gevent = [
     {file = "gevent-21.12.0-cp27-cp27m-macosx_10_14_x86_64.whl", hash = "sha256:2afa3f3ad528155433f6ac8bd64fa5cc303855b97004416ec719a6b1ca179481"},
@@ -903,6 +928,24 @@ numpy = [
     {file = "numpy-1.19.5-cp39-cp39-win_amd64.whl", hash = "sha256:0eef32ca3132a48e43f6a0f5a82cb508f22ce5a3d6f67a8329c81c8e226d3f6e"},
     {file = "numpy-1.19.5-pp36-pypy36_pp73-manylinux2010_x86_64.whl", hash = "sha256:a0d53e51a6cb6f0d9082decb7a4cb6dfb33055308c4c44f53103c073f649af73"},
     {file = "numpy-1.19.5.zip", hash = "sha256:a76f502430dd98d7546e1ea2250a7360c065a5fdea52b2dffe8ae7180909b6f4"},
+]
+onnxruntime = [
+    {file = "onnxruntime-1.8.0-cp36-cp36m-macosx_10_12_x86_64.whl", hash = "sha256:3d88648e9191c85865561b9a4cf0dfd25ee8db566e3d6147d460adb8b0f10c24"},
+    {file = "onnxruntime-1.8.0-cp36-cp36m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e9d0c9069d34307458e4bd1275ac5e64746b393a7c0ef500724afca558df6207"},
+    {file = "onnxruntime-1.8.0-cp36-cp36m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7190ad81bca865e538fc98cd5b29ac7151276b65bcdacebe318ca0da9c2263d7"},
+    {file = "onnxruntime-1.8.0-cp36-cp36m-win_amd64.whl", hash = "sha256:2855272a3bb3c3992fabc478f00c92758011db60bc9b8a1517cca6b43a11fb63"},
+    {file = "onnxruntime-1.8.0-cp37-cp37m-macosx_10_12_x86_64.whl", hash = "sha256:45560ed71fc656bb73b13f6eb630c81e2b4747276d3a0dbf79807e602f565ad9"},
+    {file = "onnxruntime-1.8.0-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0086c5d54d71f01e0c6bb4c91c46bd49017f58daa0f16b7c006d97d1e0a01e4a"},
+    {file = "onnxruntime-1.8.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f7be85c074d947352003f999c355130c4ba6018740e1b306b86dd593caccad1e"},
+    {file = "onnxruntime-1.8.0-cp37-cp37m-win_amd64.whl", hash = "sha256:1c9d998cc6bd59e0018afc7277562b5b910f0f7bc9b3a208544d2dcfdc946f28"},
+    {file = "onnxruntime-1.8.0-cp38-cp38-macosx_10_12_x86_64.whl", hash = "sha256:2a4022d357c38c1c028b20a815deaa12f609fb6902f514de1d574810c860b70d"},
+    {file = "onnxruntime-1.8.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:229c684f3f91dd830ff00dedcd3e97b9124360248eb109fb893324e3131ec2cc"},
+    {file = "onnxruntime-1.8.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f8cfdb4601267ed42eb5a33bd611b8ee27c7700b2dfc00401a8031e2ab897c97"},
+    {file = "onnxruntime-1.8.0-cp38-cp38-win_amd64.whl", hash = "sha256:b337534228373c7582667f3fc1080be0dfff7ebd38a782d84ede4beb04535e65"},
+    {file = "onnxruntime-1.8.0-cp39-cp39-macosx_10_12_x86_64.whl", hash = "sha256:60493b41d414df99cab2b048f751e6c03ec21560876c37be559f4e19350b3eeb"},
+    {file = "onnxruntime-1.8.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:69836f00688cf2cb84e17dc9c1edc4ee1b0cde65fac45023269816c3ed732f22"},
+    {file = "onnxruntime-1.8.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f96f020f5659a1b6b0fa3b19139ae19e8915aeaae938274c9db4d7619515d824"},
+    {file = "onnxruntime-1.8.0-cp39-cp39-win_amd64.whl", hash = "sha256:1357b159e340c0acbf2f95c842d477f70c7d3ecefe575d98ec33277b6f45dd56"},
 ]
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
@@ -1179,9 +1222,9 @@ transformers = [
     {file = "transformers-4.19.2.tar.gz", hash = "sha256:e19a4ff07458eda143c738e5259caf48449fcf078a63d6b1bd1aa806543440a3"},
 ]
 tritonclient = [
-    {file = "tritonclient-2.22.0-py3-none-any.whl", hash = "sha256:d8a503f5393a266e988e528e1f087305dfba8ad39ea425fea7d7bd7438163fee"},
-    {file = "tritonclient-2.22.0-py3-none-manylinux1_x86_64.whl", hash = "sha256:4cebd514223e4d1fd15db5c1008c7e6b6f21568403968e2ffddc2bf5acc8b493"},
-    {file = "tritonclient-2.22.0-py3-none-manylinux2014_aarch64.whl", hash = "sha256:6c6b8564adedad22fa14eeef6643a6f5ecc4554ff80c7314c13c75cc36a3833b"},
+    {file = "tritonclient-2.22.3-py3-none-any.whl", hash = "sha256:7cc4fc60bf435669d9c940af884fbdfd504f299943b115e5ad7ad25da315dc20"},
+    {file = "tritonclient-2.22.3-py3-none-manylinux1_x86_64.whl", hash = "sha256:467c598ce32660c711c1378d28f744fde4c752ffbba60ca175d156b65fece4ed"},
+    {file = "tritonclient-2.22.3-py3-none-manylinux2014_aarch64.whl", hash = "sha256:35747727e2ab3ac8fe6127211ab6f701988122b36a441e04f190e6153468b6cd"},
 ]
 typing-extensions = [
     {file = "typing_extensions-4.1.1-py3-none-any.whl", hash = "sha256:21c85e0fe4b9a155d0799430b0ad741cdce7e359660ccbd8b530613e8df88ce2"},
