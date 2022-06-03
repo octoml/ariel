@@ -1,19 +1,20 @@
-name: CI
-on: pull_request
+name: Release
+on:
+  push:
+    tags:
+      - '*.*.*'
 
 jobs:
-  ci:
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [3.7, 3.8, 3.9]
-        os: [ubuntu-18.04, ubuntu-20.04]
-    runs-on: ${{ matrix.os }}
+  release:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.8
+      - name: Validate tag
+        run: ./.github/scripts/verify_tag.sh
+        shell: bash
       - name: Run image
         uses: abatilo/actions-poetry@v2.1.4
       - name: View poetry --help
@@ -22,3 +23,5 @@ jobs:
         run: poetry install
       - name: poetry test
         run: poetry run pytest
+      - name: poetry publish --build
+        run: poetry publish --build --username $PYPI_USERNAME --password $PYPI_PASSWORD
