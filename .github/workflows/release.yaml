@@ -24,4 +24,4 @@ jobs:
       - name: poetry test
         run: poetry run pytest
       - name: poetry publish --build
-        run: poetry publish --build --username $PYPI_USERNAME --password $PYPI_PASSWORD
+        run: poetry publish --build --username ${{secrets.PYPI_USERNAME}} --password ${{secrets.PYPI_PASSWORD}}
