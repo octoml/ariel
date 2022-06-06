@@ -4,6 +4,7 @@ from transformers import GPT2Tokenizer, GPT2Model
 import numpy as np
 import os
 import torch
+import pytest
 
 
 def get_model_path(model_name, ext):
@@ -125,6 +126,7 @@ def test_tensorflow_model():
         np.testing.assert_array_equal(a, b)
 
 
+@pytest.mark.xfail(reason="This test is flaky")
 def test_torch_model():
     model_name = "torch_model"
     n = (3, 4)

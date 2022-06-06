@@ -9,8 +9,9 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.7"
+protobuf = ">=3.5.0,<3.20" # copied from tritonclient - https://github.com/triton-inference-server/client/commit/efd1cbe0cca60e750aed395c78b3ee5c90139add
 grpcio = "~1.41.0" # pinned to tritonclient's version
-tritonclient = {version = "^2.22.0", extras= ["all"]}
+tritonclient = {version = "^2.22", extras= ["all"]}
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
