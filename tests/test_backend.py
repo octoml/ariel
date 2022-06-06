@@ -126,7 +126,6 @@ def test_tensorflow_model():
         np.testing.assert_array_equal(a, b)
 
 
-@pytest.mark.xfail(reason="This test is flaky")
 def test_torch_model():
     model_name = "torch_model"
     n = (3, 4)
@@ -138,4 +137,4 @@ def test_torch_model():
     torch_model.eval()
     exp = torch_model(torch.from_numpy(a), torch.from_numpy(b))
     for (a, b) in zip(exp, res):
-        np.testing.assert_array_equal(a, b)
+        np.testing.assert_array_almost_equal(a, b, decimal=6)
