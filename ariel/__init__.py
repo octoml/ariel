@@ -1,7 +1,9 @@
 import tritonclient.grpc as grpc_client
+import tritonclient.http as http_client
 from tritonclient.utils import np_to_triton_dtype
 from tritonclient.grpc import service_pb2
 from tritonclient.grpc.service_pb2 import model__config__pb2 as model_config_pb2
+from types import SimpleNamespace
 
 __version__ = "0.1.0"
 
@@ -34,8 +36,11 @@ def output_from_model(name, url="localhost:8001"):
 # shapes and dtypes are checked in InferInput, when set_data_from_numpy() is invoked
 def function_from_model(
     model_name, preprocessing=None, postprocessing=None, hostname="localhost",
-    port=8001
+    port=8001, protocol="grpc"
 ):
+    if protocol not in ["grpc", "http"]:
+        raise_error(f"Protocol not supported: {{protocol}}, only grpc and http supported")
+
     url = f"{hostname}:{port}"
     def _wrapper(*args, **kwargs):
         assert (len(args) == 0) ^ (
@@ -43,10 +48,22 @@ def function_from_model(
         ), "You may provide inputs in the form of either args or kwargs, but not both"
         actual_args = args if len(args) > 0 else kwargs
 
-        client = grpc_client.InferenceServerClient(url)
-        config = client.get_model_config(model_name).config
-        model_input = input_from_config(config)
-        model_output = output_from_config(config)
+        if protocol == "grpc":
+            client = grpc_client.InferenceServerClient(url)
+            config = client.get_model_config(model_name).config
+            model_input = input_from_config(config)
+            model_output = output_from_config(config)
+            _InferInput = grpc_client.InferInput
+            _InferRequestedOutput = grpc_client.InferRequestedOutput
+        if protocol == "http":
+            client = http_client.InferenceServerClient(url)
+            config = SimpleNamespace(**client.get_model_config(model_name))
+            model_input = [SimpleNamespace(**i) for i in client.get_model_config(model_name)["input"]]
+            model_output = [SimpleNamespace(**i) for i in client.get_model_config(model_name)["output"]]
+            _InferInput = http_client.InferInput
+            _InferRequestedOutput = http_client.InferRequestedOutput
+
+
         inputs = []
 
         no_expected = len(model_input)
@@ -56,11 +73,11 @@ def function_from_model(
             raise_error(f"the number of provided arguments ({no_expected}) and inputs ({no_provided}) must match")
 
         pre = preprocessing(actual_args) if preprocessing else actual_args
-        
-        if len(args) > 0:   
+
+        if len(args) > 0:
             for (a, b) in zip(pre, model_input):
                 inputs.append(
-                    grpc_client.InferInput(b.name, a.shape, np_to_triton_dtype(a.dtype))
+                    _InferInput(b.name, a.shape, np_to_triton_dtype(a.dtype))
                 )
             for (a, b) in zip(pre, inputs):
                 b.set_data_from_numpy(a)
@@ -68,10 +85,10 @@ def function_from_model(
             for b in model_input:
                 a = pre[b.name]
                 inputs.append(
-                    grpc_client.InferInput(b.name, a.shape, np_to_triton_dtype(a.dtype))
+                    _InferInput(b.name, a.shape, np_to_triton_dtype(a.dtype))
                 )
                 inputs[-1].set_data_from_numpy(a)
-        outputs = [grpc_client.InferRequestedOutput(o.name) for o in model_output]
+        outputs = [_InferRequestedOutput(o.name) for o in model_output]
         response = client.infer(model_name, inputs, model_version="1", outputs=outputs)
         result = [response.as_numpy(o.name) for o in model_output]
         if config.backend == "onnxruntime":
