@@ -43,6 +43,17 @@ def test_py_model():
     for (a, b) in zip(exp, res):
         np.testing.assert_array_equal(a, b)
 
+def test_py_model_http():
+    n = 4
+    m = 10
+    a = np.random.randint(m, size=n, dtype=np.int32).astype(np.float32)
+    b = np.random.randint(m, size=n, dtype=np.int32).astype(np.float32)
+    f = function_from_model("py_model", port=8000, protocol="http")
+    res = f(a, b)
+    exp = [a + b, a - b]
+    for (a, b) in zip(exp, res):
+        np.testing.assert_array_equal(a, b)
+
 
 def test_py_model_with_preprocessing():
     n = 4
@@ -55,6 +66,19 @@ def test_py_model_with_preprocessing():
     exp = [pre[0] + pre[1], pre[0] - pre[1]]
     for (a, b) in zip(exp, res):
         np.testing.assert_array_equal(a, b)
+
+def test_py_model_with_preprocessing_with_http():
+    n = 4
+    m = 10
+    a = np.random.randint(m, size=n, dtype=np.int32).astype(np.float32)
+    b = np.random.randint(m, size=n, dtype=np.int32).astype(np.float32)
+    f = function_from_model("py_model", preprocessing=preprocessing, port=8000, protocol="http")
+    res = f(a, b)
+    pre = preprocessing([a, b])
+    exp = [pre[0] + pre[1], pre[0] - pre[1]]
+    for (a, b) in zip(exp, res):
+        np.testing.assert_array_equal(a, b)
+
 
 
 def test_py_model_with_postprocessing():
