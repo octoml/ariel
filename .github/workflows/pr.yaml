@@ -9,6 +9,7 @@ jobs:
         python-version: [3.7, 3.8, 3.9]
         os: [ubuntu-18.04, ubuntu-20.04]
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
